@@ -1,0 +1,23 @@
+name: Build and push docker image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build docker image
+        run: docker build -t tejasdp02/nodeact:latest .
+
+      - name: Login 
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u tejasdp02 --password-stdin
+
+      - name: Push image
+        run: docker push tejasdp02/nodeact:latest
